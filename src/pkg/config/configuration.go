@@ -9,6 +9,7 @@ import (
 )
 
 type Twitter struct {
+	Username     string `yaml:"username"`
 	ApiKey       string `yaml:"api_key"`
 	ApiSecret    string `yaml:"api_secret"`
 	AccessKey    string `yaml:"access_key"`
