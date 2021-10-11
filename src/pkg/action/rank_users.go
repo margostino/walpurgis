@@ -1,4 +1,4 @@
-package commands
+package action
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 
 // TODO: call in parallel, improve performance
 
-func RankCreators() {
+func ExecuteRankUsers() {
 	users := db.LoadUsersData()
 
 	ch := make(chan db.UserInfo)

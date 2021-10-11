@@ -1,4 +1,4 @@
-package commands
+package action
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func SnapshotFriend() []db.User {
+func SnapshotUsers() []db.User {
 	var cursor int64
 	var allUsers = make([]db.User, 0)
 

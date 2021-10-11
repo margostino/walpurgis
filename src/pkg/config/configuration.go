@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/margostino/griffin/pkg/griffin"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
@@ -17,7 +18,8 @@ type Twitter struct {
 }
 
 type Configuration struct {
-	Twitter Twitter `yaml:"twitter"`
+	Twitter  Twitter                       `yaml:"twitter"`
+	Commands []griffin.CommandConfiguration `yaml:"commands"`
 }
 
 func GetConfigFile(filename string) string {
@@ -37,7 +39,7 @@ func GetConfigFile(filename string) string {
 
 func GetConfiguration() *Configuration {
 	var configuration Configuration
-	yamlFile, err := ioutil.ReadFile(GetConfigFile("configuration.yaml"))
+	yamlFile, err := ioutil.ReadFile(GetConfigFile("configuration.yml"))
 
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)

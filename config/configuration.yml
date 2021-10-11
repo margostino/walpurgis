@@ -1,0 +1,17 @@
+twitter:
+  username: margostino
+  api_key: ${API_KEY}
+  api_secret: ${API_SECRET}
+  access_key: ${ACCESS_KEY}
+  access_secret: ${ACCESS_SECRET}
+
+commands:
+  - id: rank users
+    description: "Get friends ranking sorted by latest tweet"
+    action: ExecuteRankUsers
+  - id: help
+    description: "List available commands"
+    action: ExecuteHelp
+  - id: exit
+    description: "Exit shell"
+    action: ExecuteExit

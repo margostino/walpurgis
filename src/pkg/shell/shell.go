@@ -35,7 +35,7 @@ func (s *Shell) GetOptions() []prompt.Suggest {
 
 func NewShell() *Shell {
 	suggestions := []prompt.Suggest{
-		{Text: "rank creators", Description: "Get friends with latest tweet"},
+		{Text: "rank users", Description: "Get friends ranking sorted by latest tweet"},
 	}
 	PowerShell = &Shell{Suggestions: suggestions}
 	return PowerShell
