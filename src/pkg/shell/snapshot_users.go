@@ -1,9 +1,9 @@
-package action
+package shell
 
 import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/margostino/walpurgis/pkg/client"
+	"github.com/margostino/walpurgis/pkg/context"
 	"github.com/margostino/walpurgis/pkg/db"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"time"
@@ -18,7 +18,7 @@ func SnapshotUsers() []db.User {
 	defer file.Close()
 
 	for ok := true; ok; ok = cursor != 0 {
-		friends, resp, _ := client.Twitter.Friends.List(&twitter.FriendListParams{
+		friends, resp, _ := context.TwitterFriends().List(&twitter.FriendListParams{
 			Cursor: cursor,
 		})
 		if resp.StatusCode != 429 {

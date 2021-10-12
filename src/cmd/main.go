@@ -1,17 +1,12 @@
 package main
 
 import (
-	"github.com/margostino/griffin/pkg/griffin"
-	"github.com/margostino/walpurgis/pkg/action"
-	"github.com/margostino/walpurgis/pkg/client"
+	"github.com/margostino/walpurgis/pkg/context"
+	"github.com/margostino/walpurgis/pkg/shell"
 )
 
 func main() {
-	client.NewClient()
-	powershell := griffin.New().
-		SetPrompt("walpurgis").
-		SetActions(action.ActionMap).
-		LoadConfiguration("../config/configuration.yml")
-	action.PowerShell = powershell
-	powershell.Start()
+	context.Initialize()
+	shell.Initialize()
+	shell.Start()
 }

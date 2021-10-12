@@ -1,9 +1,9 @@
-package action
+package shell
 
 import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/margostino/walpurgis/pkg/client"
+	"github.com/margostino/walpurgis/pkg/context"
 	"github.com/margostino/walpurgis/pkg/db"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"sort"
@@ -43,7 +43,7 @@ func getLastGetLastActivityOf(users *[]db.User, ch chan<- db.UserInfo, wg *sync.
 func getLastActivityBy(user db.User, ch chan<- db.UserInfo) {
 	var lastActivity time.Time
 	id, _ := strconv.ParseInt(user.ID, 10, 64)
-	tweets, _, err := client.Twitter.Timelines.UserTimeline(&twitter.UserTimelineParams{
+	tweets, _, err := context.TwitterTimelines().UserTimeline(&twitter.UserTimelineParams{
 		UserID: id,
 		Count:  1,
 	})
