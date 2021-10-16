@@ -5,7 +5,8 @@ import (
 )
 
 var Mapping = map[string]func(){
-	"ExecuteRankUsers": ExecuteRankUsers,
-	"ExecuteHelp":      ExecuteHelp,
-	"ExecuteExit":      griffin.ExecuteExit,
+	"ExecuteRankUsers":     ExecuteRankUsers,
+	"ExecuteSnapshotUsers": ExecuteSnapshotUsers,
+	"ExecuteHelp":          ExecuteHelp,
+	"ExecuteExit":          griffin.ExecuteExit,
 }

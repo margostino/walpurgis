@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func SnapshotUsers() []db.User {
+func ExecuteSnapshotUsers() {
 	var cursor int64
 	var allUsers = make([]db.User, 0)
 
@@ -20,6 +20,7 @@ func SnapshotUsers() []db.User {
 	for ok := true; ok; ok = cursor != 0 {
 		friends, resp, _ := context.TwitterFriends().List(&twitter.FriendListParams{
 			Cursor: cursor,
+			Count:  200,
 		})
 		if resp.StatusCode != 429 {
 			for _, user := range friends.Users {
@@ -38,5 +39,4 @@ func SnapshotUsers() []db.User {
 			break
 		}
 	}
-	return allUsers
 }

@@ -32,7 +32,7 @@ func LoadUsersData() []User {
 	file := OpenFile()
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
-	// optionally, resize scanner's capacity for lines over 64K, see next example
+	// optionally, resize scanner's capacity for lines over 64K
 	for scanner.Scan() {
 		values := strings.Split(scanner.Text(), ",")
 		createdAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", values[2])

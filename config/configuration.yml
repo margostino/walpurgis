@@ -9,6 +9,9 @@ commands:
   - id: rank users
     description: "Get friends ranking sorted by latest tweet"
     action: ExecuteRankUsers
+  - id: snapshot users
+    description: "Collect and save an updated list of friends"
+    action: ExecuteSnapshotUsers
   - id: help
     description: "List available commands"
     action: ExecuteHelp
