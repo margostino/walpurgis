@@ -15,14 +15,32 @@ type UserInfo struct {
 }
 
 type User struct {
-	ID        string
-	Username  string
-	CreatedAt time.Time
+	ID                  string
+	Username            string
+	Name                string
+	CreatedAt           time.Time
+	Description         string
+	Email               string
+	FavouritesCount     int
+	FollowRequestSent   bool
+	FollowersCount      int
+	FriendsCount        int
+	GeoEnabled          bool
+	Lang                string
+	Location            string
+	LastStatusCreatedAt time.Time
+	Retweeted           bool
+	IsRetweet           bool
+	StatusRetweetCount  int
+	StatusReplyCount    int
+	StatusQuoteCount    int
+	StatusText          string
+	NextCursorStr       string
 }
 
 func OpenFile() *os.File {
 	filename := "../data/users"
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(filename, os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
 	helper.Check(err)
 	return file
 }

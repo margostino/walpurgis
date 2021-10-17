@@ -27,7 +27,8 @@ func ExecuteSnapshotUsers() {
 		if resp.StatusCode != 429 {
 			for _, user := range friends.Users {
 				createdAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.CreatedAt)
-				description := strings.ReplaceAll(user.Description, ",", " %44% ")
+				description := strings.ReplaceAll(strings.ReplaceAll(user.Description, ",", " %44% "), "\n", "")
+				statusText := strings.ReplaceAll(strings.ReplaceAll(user.Status.Text, ",", " %44% "), "\n", "")
 				statusCreatedAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.Status.CreatedAt)
 
 				allUsers = append(allUsers, db.User{
@@ -36,13 +37,13 @@ func ExecuteSnapshotUsers() {
 					CreatedAt: createdAt,
 				})
 				text := fmt.Sprintf("%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%s,%s,%s,%s,%s,%d,%d,%d,%s,%s,%s\n",
+					user.IDStr,
 					user.ScreenName,
 					user.Name,
-					user.IDStr,
 					user.CreatedAt,
 					user.Email,
 					user.FavouritesCount,
-					user.FollowRequestSent,
+					strconv.FormatBool(user.FollowRequestSent),
 					user.FollowersCount,
 					user.FriendsCount,
 					strconv.FormatBool(user.GeoEnabled),
@@ -50,11 +51,11 @@ func ExecuteSnapshotUsers() {
 					user.Location,
 					statusCreatedAt,
 					strconv.FormatBool(user.Status.Retweeted),
-					user.Status.RetweetedStatus != nil,
+					strconv.FormatBool(user.Status.RetweetedStatus != nil),
 					user.Status.RetweetCount,
 					user.Status.ReplyCount,
 					user.Status.QuoteCount,
-					user.Status.Text,
+					statusText,
 					description,
 					friends.NextCursorStr)
 				_, err := file.WriteString(text)
