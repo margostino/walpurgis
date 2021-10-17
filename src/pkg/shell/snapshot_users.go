@@ -16,7 +16,7 @@ func ExecuteSnapshotUsers() {
 	var allUsers = make([]db.User, 0)
 
 	cursor = -1
-	file := db.OpenFile()
+	file := db.TruncateFile()
 	defer file.Close()
 
 	for ok := true; ok; ok = cursor != 0 {
