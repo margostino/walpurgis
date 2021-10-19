@@ -8,15 +8,29 @@ import (
 	"github.com/margostino/walpurgis/pkg/helper"
 	"sort"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
 
 // TODO: call in parallel, improve performance
 
-func ExecuteRankUsers() {
+func ExecuteRankUsers(args []string) {
 	users := db.LoadUsersData()
 
+	if len(args) ==  0 {
+		rankByLastActivity(users)
+	} else {
+		for _, user := range users  {
+			if strings.Contains(user.Description, args[2]) {
+				fmt.Printf("[%s] - %s]\n", user.Username, user.Description)
+			}
+		}
+	}
+
+}
+
+func rankByLastActivity(users []db.User)  {
 	ch := make(chan db.UserInfo)
 	wg := sync.WaitGroup{}
 	wg.Add(len(users))

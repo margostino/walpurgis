@@ -4,9 +4,12 @@ import (
 	"github.com/margostino/griffin/pkg/griffin"
 )
 
-var Mapping = map[string]func(){
-	"ExecuteRankUsers":     ExecuteRankUsers,
+var SimpleActionsMapping = map[string]func(){
 	"ExecuteSnapshotUsers": ExecuteSnapshotUsers,
 	"ExecuteHelp":          ExecuteHelp,
 	"ExecuteExit":          griffin.ExecuteExit,
+}
+
+var InputStringsActionMapping = map[string]func([]string){
+	"ExecuteRankUsers": ExecuteRankUsers,
 }

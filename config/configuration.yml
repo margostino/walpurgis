@@ -9,6 +9,8 @@ commands:
   - id: rank users
     description: "Get friends ranking sorted by latest tweet"
     action: ExecuteRankUsers
+    args: 51
+    pattern: "^rank users [a-z-A-Z]+ (like|=|<|>|<>) [a-z-A-Z]+$"
   - id: snapshot users
     description: "Collect and save an updated list of friends"
     action: ExecuteSnapshotUsers

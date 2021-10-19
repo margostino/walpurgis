@@ -10,7 +10,8 @@ var appShell *griffin.Shell
 func Initialize() {
 	appShell = griffin.New().
 		SetPrompt("walpurgis").
-		SetActions(Mapping).
+		SetSimpleActions(SimpleActionsMapping).
+		SetMultiParamsActions(InputStringsActionMapping).
 		SetConfiguration(context.CommandsConfiguration())
 }
 
