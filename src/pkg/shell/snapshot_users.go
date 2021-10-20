@@ -40,7 +40,7 @@ func ExecuteSnapshotUsers() {
 					user.IDStr,
 					user.ScreenName,
 					user.Name,
-					user.CreatedAt,
+					createdAt,
 					user.Email,
 					user.FavouritesCount,
 					strconv.FormatBool(user.FollowRequestSent),

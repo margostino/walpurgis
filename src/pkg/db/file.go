@@ -62,8 +62,9 @@ func LoadUsersData() []*User {
 	scanner := bufio.NewScanner(file)
 	// optionally, resize scanner's capacity for lines over 64K
 	for scanner.Scan() {
+		// TODO: validations for time/date
 		values := strings.Split(scanner.Text(), ",")
-		createdAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", values[2])
+		createdAt, _ := time.Parse("Mon Jan 02 15:04:05 -0700 2006", values[3])
 		statusCreatedAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", values[12])
 		favouritesCount, _ := strconv.Atoi(values[5])
 		followRequestSent, _ := strconv.ParseBool(values[6])
