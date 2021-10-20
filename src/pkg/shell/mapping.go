@@ -11,5 +11,6 @@ var SimpleActionsMapping = map[string]func(){
 }
 
 var InputStringsActionMapping = map[string]func([]string){
-	"ExecuteRankUsers": ExecuteRankUsers,
+	"ExecuteRankUsersBy":      ExecuteRankUsersBy,
+	"ExecuteSelectUsersWhere": ExecuteSelectUsersWhere,
 }

@@ -55,8 +55,8 @@ func OpenFile() *os.File {
 	return file
 }
 
-func LoadUsersData() []User {
-	var allUsers = make([]User, 0)
+func LoadUsersData() []*User {
+	var allUsers = make([]*User, 0)
 	file := OpenFile()
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -76,7 +76,7 @@ func LoadUsersData() []User {
 		statusReplyCount, _ := strconv.Atoi(values[16])
 		statusQuoteCount, _ := strconv.Atoi(values[17])
 
-		allUsers = append(allUsers, User{
+		allUsers = append(allUsers, &User{
 			ID:                  values[0],
 			Username:            values[1],
 			Name:                values[2],

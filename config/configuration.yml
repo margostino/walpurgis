@@ -6,11 +6,16 @@ twitter:
   access_secret: ${ACCESS_SECRET}
 
 commands:
-  - id: rank users
-    description: "Get friends ranking sorted by latest tweet"
-    action: ExecuteRankUsers
+  - id: rank users by
+    description: "Get friends ranking sorted by field(s)"
+    action: ExecuteRankUsersBy
     args: 51
-    pattern: "^rank users [a-z-A-Z]+ (like|=|<|>|<>) [a-z-A-Z]+$"
+    pattern: "^rank users by [a-z-A-Z]+$"
+  - id: select users where
+    description: "Select and filter users by condition(s)"
+    action: ExecuteSelectUsersWhere
+    args: 51
+    pattern: "^select users [a-z-A-Z]+ (like|=|<|>|<>) [a-z-A-Z]+$"
   - id: snapshot users
     description: "Collect and save an updated list of friends"
     action: ExecuteSnapshotUsers

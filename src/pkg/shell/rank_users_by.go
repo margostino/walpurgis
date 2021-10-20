@@ -13,24 +13,45 @@ import (
 	"time"
 )
 
-// TODO: call in parallel, improve performance
-
-func ExecuteRankUsers(args []string) {
+func ExecuteRankUsersBy(args []string) {
 	users := db.LoadUsersData()
 
-	if len(args) ==  0 {
-		rankByLastActivity(users)
+	if len(args) == 0 {
+		// TODO: pre-defined fallback/default
+		rankByLastStatus(users)
 	} else {
-		for _, user := range users  {
-			if strings.Contains(user.Description, args[2]) {
-				fmt.Printf("[%s] - %s]\n", user.Username, user.Description)
-			}
-		}
+		rankByAttribute(users, args[0])
+	}
+}
+
+func rankByAttribute(users []*db.User, attribute string) {
+	switch strings.ToLower(attribute) {
+	case "laststatuscreatedat":
+		rankByLastStatus(users)
+		printUsers(users)
+	case "createdat":
+		rankByCreatedAt(users)
+		printUsers(users)
+	default:
+		fmt.Printf("condition not found\n")
 	}
 
 }
 
-func rankByLastActivity(users []db.User)  {
+// TODO: generalize all sorting in one
+func rankByCreatedAt(users []*db.User) {
+	sort.SliceStable(users, func(i, j int) bool {
+		return (users)[i].CreatedAt.Before((users)[j].CreatedAt)
+	})
+}
+
+func rankByLastStatus(users []*db.User) {
+	sort.SliceStable(users, func(i, j int) bool {
+		return (users)[i].LastStatusCreatedAt.Before((users)[j].LastStatusCreatedAt)
+	})
+}
+
+func rankByLastTimelineActivity(users []db.User) {
 	ch := make(chan db.UserInfo)
 	wg := sync.WaitGroup{}
 	wg.Add(len(users))
@@ -83,6 +104,13 @@ func sortByLastActivity(profiles *[]db.UserInfo) {
 	sort.SliceStable(*profiles, func(i, j int) bool {
 		return (*profiles)[i].LastActivity.Before((*profiles)[j].LastActivity)
 	})
+}
+
+// TODO: generalize all prints and the requested information
+func printUsers(users []*db.User) {
+	for _, user := range users {
+		fmt.Printf("[%s] - %s]\n", user.Username, user.CreatedAt)
+	}
 }
 
 func print(profiles *[]db.UserInfo) {
