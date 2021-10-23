@@ -8,12 +8,10 @@ import (
 	"github.com/margostino/walpurgis/pkg/helper"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func ExecuteSnapshotUsers() {
 	var cursor int64
-	var allUsers = make([]db.User, 0)
 
 	cursor = -1
 	file := db.TruncateFile()
@@ -26,21 +24,16 @@ func ExecuteSnapshotUsers() {
 		})
 		if resp.StatusCode != 429 {
 			for _, user := range friends.Users {
-				createdAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.CreatedAt)
+				//createdAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.CreatedAt)
+				//statusCreatedAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.Status.CreatedAt)
 				description := strings.ReplaceAll(strings.ReplaceAll(user.Description, ",", " %44% "), "\n", "")
 				statusText := strings.ReplaceAll(strings.ReplaceAll(user.Status.Text, ",", " %44% "), "\n", "")
-				statusCreatedAt, _ := time.Parse("Wed Jan 09 20:56:37 +0000 2019", user.Status.CreatedAt)
 
-				allUsers = append(allUsers, db.User{
-					ID:        user.IDStr,
-					Username:  user.ScreenName,
-					CreatedAt: createdAt,
-				})
 				text := fmt.Sprintf("%s,%s,%s,%s,%s,%d,%s,%d,%d,%s,%s,%s,%s,%s,%s,%d,%d,%d,%s,%s,%s\n",
 					user.IDStr,
 					user.ScreenName,
 					user.Name,
-					createdAt,
+					user.CreatedAt,
 					user.Email,
 					user.FavouritesCount,
 					strconv.FormatBool(user.FollowRequestSent),
@@ -49,7 +42,7 @@ func ExecuteSnapshotUsers() {
 					strconv.FormatBool(user.GeoEnabled),
 					user.Lang,
 					user.Location,
-					statusCreatedAt,
+					user.Status.CreatedAt,
 					strconv.FormatBool(user.Status.Retweeted),
 					strconv.FormatBool(user.Status.RetweetedStatus != nil),
 					user.Status.RetweetCount,

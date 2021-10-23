@@ -10,7 +10,7 @@ commands:
     description: "Get friends ranking sorted by field(s)"
     action: ExecuteRankUsersBy
     args: 51
-    pattern: "^rank users by [a-z-A-Z]+$"
+    pattern: "^rank users by (status|age|fav|followers|following)( asc| desc)?$"
   - id: select users where
     description: "Select and filter users by condition(s)"
     action: ExecuteSelectUsersWhere

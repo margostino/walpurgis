@@ -19,30 +19,49 @@ func ExecuteRankUsersBy(args []string) {
 	if len(args) == 0 {
 		// TODO: pre-defined fallback/default
 		rankByLastStatus(users)
+	} else if len(args) == 2 && (args[1] == "asc" || args[1] == "desc") {
+		rankByAttribute(users, args[0], args[1])
 	} else {
-		rankByAttribute(users, args[0])
+		rankByAttribute(users, args[0], "asc")
 	}
 }
 
-func rankByAttribute(users []*db.User, attribute string) {
-	switch strings.ToLower(attribute) {
-	case "laststatuscreatedat":
-		rankByLastStatus(users)
-		printUsers(users)
-	case "createdat":
-		rankByCreatedAt(users)
-		printUsers(users)
-	default:
-		fmt.Printf("condition not found\n")
-	}
-
+func rankByAttribute(users []*db.User, attribute string, order string) {
+	rankBy(users, attribute, order)
+	print(users)
 }
 
-// TODO: generalize all sorting in one
-func rankByCreatedAt(users []*db.User) {
+func rankBy(users []*db.User, attribute string, order string) {
 	sort.SliceStable(users, func(i, j int) bool {
-		return (users)[i].CreatedAt.Before((users)[j].CreatedAt)
+		switch strings.ToLower(attribute) {
+		case "status":
+			return rankByTime((users)[i].LastStatusCreatedAt, (users)[j].LastStatusCreatedAt, order)
+		case "age":
+			return rankByTime((users)[i].CreatedAt, (users)[j].CreatedAt, order)
+		case "fav":
+			return rankByNumber((users)[i].FavouritesCount, (users)[j].FavouritesCount, order)
+		case "followers":
+			return rankByNumber((users)[i].FollowersCount, (users)[j].FollowersCount, order)
+		case "following":
+			return rankByNumber((users)[i].FriendsCount, (users)[j].FriendsCount, order)
+		default:
+			return false
+		}
 	})
+}
+
+func rankByTime(first time.Time, second time.Time, order string) bool {
+	if order == "asc" {
+		return first.Before(second)
+	}
+	return first.After(second)
+}
+
+func rankByNumber(first int, second int, order string) bool {
+	if order == "asc" {
+		return first < second
+	}
+	return first > second
 }
 
 func rankByLastStatus(users []*db.User) {
@@ -51,22 +70,22 @@ func rankByLastStatus(users []*db.User) {
 	})
 }
 
-func rankByLastTimelineActivity(users []db.User) {
-	ch := make(chan db.UserInfo)
-	wg := sync.WaitGroup{}
-	wg.Add(len(users))
-	wgAppender := sync.WaitGroup{}
-	wgAppender.Add(len(users))
-
-	getLastGetLastActivityOf(&users, ch, &wg)
-
-	wg.Wait()
-	profiles := getUserProfile(users, ch, &wgAppender)
-	wgAppender.Wait()
-	sortByLastActivity(&profiles)
-	print(&profiles)
-	close(ch)
-}
+//func rankByLastTimelineActivity(users []db.User) {
+//	ch := make(chan db.UserInfo)
+//	wg := sync.WaitGroup{}
+//	wg.Add(len(users))
+//	wgAppender := sync.WaitGroup{}
+//	wgAppender.Add(len(users))
+//
+//	getLastGetLastActivityOf(&users, ch, &wg)
+//
+//	wg.Wait()
+//	profiles := getUserProfile(users, ch, &wgAppender)
+//	wgAppender.Wait()
+//	sortByLastActivity(&profiles)
+//	print(&profiles)
+//	close(ch)
+//}
 
 func getLastGetLastActivityOf(users *[]db.User, ch chan<- db.UserInfo, wg *sync.WaitGroup) {
 	for _, user := range *users {
@@ -107,14 +126,8 @@ func sortByLastActivity(profiles *[]db.UserInfo) {
 }
 
 // TODO: generalize all prints and the requested information
-func printUsers(users []*db.User) {
+func print(users []*db.User) {
 	for _, user := range users {
-		fmt.Printf("[%s] - %s]\n", user.Username, user.CreatedAt)
-	}
-}
-
-func print(profiles *[]db.UserInfo) {
-	for _, profile := range *profiles {
-		fmt.Printf("[%s] - %s]\n", profile.Username, profile.LastActivity)
+		fmt.Printf("User: %s - Created At: %s - Last Activity: %s]\n", user.Username, user.CreatedAt, user.LastStatusCreatedAt)
 	}
 }
