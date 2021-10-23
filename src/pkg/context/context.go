@@ -23,3 +23,7 @@ func Initialize() {
 		Twitter:       twitter.NewClient(httpClient),
 	}
 }
+
+func GetTwitterUsername() string {
+	return appContext.Configuration.Twitter.Username
+}

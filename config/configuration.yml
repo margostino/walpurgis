@@ -25,3 +25,6 @@ commands:
   - id: exit
     description: "Exit shell"
     action: ExecuteExit
+  - id: show stats
+    description: "Show general stats from user"
+    action: ExecuteShowStats
