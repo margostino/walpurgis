@@ -9,13 +9,13 @@ commands:
   - id: rank users by
     description: "Get friends ranking sorted by field(s)"
     action: ExecuteRankUsersBy
-    args: 51
+    args: 2
     pattern: "^rank users by (status|age|fav|followers|following)( asc| desc)?$"
   - id: select users where
     description: "Select and filter users by condition(s)"
     action: ExecuteSelectUsersWhere
-    args: 51
-    pattern: "^select users [a-z-A-Z]+ (like|=|<|>|<>) [a-z-A-Z]+$"
+    args: 3
+    pattern: "^select users where (description|name|email|status) (like|=|not like) [a-zA-Z0-9_]+$"
   - id: snapshot users
     description: "Collect and save an updated list of friends"
     action: ExecuteSnapshotUsers
