@@ -2,6 +2,7 @@ package db
 
 import (
 	"bufio"
+	"github.com/margostino/walpurgis/pkg/context"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"log"
 	"os"
@@ -39,18 +40,14 @@ type User struct {
 	NextCursorStr       string
 }
 
-const (
-	FILENAME string = "../data/users"
-)
-
 func TruncateFile() *os.File {
-	file, err := os.OpenFile(FILENAME, os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(context.GetUserStorePath(), os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
 	helper.Check(err)
 	return file
 }
 
 func OpenFile() *os.File {
-	file, err := os.OpenFile(FILENAME, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(context.GetUserStorePath(), os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 	helper.Check(err)
 	return file
 }

@@ -1,3 +1,6 @@
+store:
+  users: data/users
+
 twitter:
   username: margostino
   api_key: ${API_KEY}
@@ -28,3 +31,17 @@ commands:
   - id: show stats
     description: "Show general stats from user"
     action: ExecuteShowStats
+
+quotes:
+  - author: Albert Einstein
+    quote: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."
+  - author: Steve Jobs
+    quote: "Stay hungry, stay foolish."
+  - author: Stephen King
+    quote: "The trust of the innocent is the liar's most useful tool."
+  - author: J.R.R. Tolkien
+    quote: "Not all those who wander are lost."
+  - author: J.R.R. Tolkien
+    quote: "Faithless is he that says farewell when the road darkens."
+  - author: Jorge Luis Borges
+    quote: "Being with you and not being with you is the only way I have to measure time."

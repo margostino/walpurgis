@@ -9,7 +9,7 @@ var appShell *griffin.Shell
 
 func Initialize() {
 	appShell = griffin.New().
-		SetPrompt("walpurgis").
+		SetPrompt(context.GetUsername() + "@walpurgis").
 		SetSimpleActions(SimpleActionsMapping).
 		SetMultiParamsActions(InputStringsActionMapping).
 		SetConfiguration(context.CommandsConfiguration())

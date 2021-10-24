@@ -5,13 +5,13 @@ import (
 )
 
 func TwitterTimelines() *twitter.TimelineService {
-	return appContext.Twitter.Timelines
+	return appContext.TwitterClient.Timelines
 }
 
 func TwitterUsers() *twitter.UserService {
-	return appContext.Twitter.Users
+	return appContext.TwitterClient.Users
 }
 
 func TwitterFriends() *twitter.FriendService {
-	return appContext.Twitter.Friends
+	return appContext.TwitterClient.Friends
 }

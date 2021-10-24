@@ -8,5 +8,6 @@ import (
 func main() {
 	context.Initialize()
 	shell.Initialize()
+	context.Welcome()
 	shell.Start()
 }
