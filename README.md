@@ -38,6 +38,34 @@ margostino@walpurgis> help
 margostino@walpurgis> snapshot users
 ```
 
+### Calculate some pre-defined stats
+```shell
+margostino@walpurgis> show stats
+
+Username: margostino
+Created at: Sun Jun 21 23:46:07 +0000 2009
+Description: 𝙴𝚟𝚎𝚗𝚝 𝙳𝚛𝚒𝚟𝚎𝚗 𝚂𝚒𝚗𝚐𝚞𝚕𝚊𝚛𝚒𝚝𝚢 • 𝙱𝚞𝚒𝚕𝚍𝚒𝚗𝚐 @NextGreenGene • 🇦🇷 🇸🇪 🌎 👨🏻‍💻 📖 ⚽️🏔 ❄️ 🎶 🚲
+Location: Stockholm, Sweden 🇸🇪
+Followers: 478
+Following: 550
+Last Activity at: Mon Oct 18 19:53:27 +0000 2021
+Following 0.01% accounts related with climate change
+Following 0.02% accounts related with climate
+Following 0.47% accounts with Geo Location enabled
+Following 0.16% accounts which are following less than 100 accounts
+Following 0.35% accounts which are following less than 300 accounts
+Following 0.51% accounts which are following less than 600 accounts
+Following 0.69% accounts which are following less than 1000 accounts
+Following 0.31% accounts which are following more than 1000 accounts
+Following 0.01% accounts with less than 100 followers
+Following 0.03% accounts with less than 300 followers
+Following 0.04% accounts with less than 600 followers
+Following 0.07% accounts with less than 1000 followers
+Following 0.93% accounts with more than 1000 followers
+Following 0.00% accounts with email
+...
+```
+
 ### Rank users by conditions (age, last activity, followers, following)
 ```shell
 margostino@walpurgis> rank users by age asc
@@ -72,5 +100,7 @@ bye!
 - [ ] Smart and more insightful queries
 - [ ] Pattern matching
 - [ ] Streaming processing
+- [ ] Cross validation and metrics
+- [ ] Tests
 
 
