@@ -87,6 +87,7 @@ margostino@walpurgis> select users where description like climate
 [AntarcticReport] - Follow for News on Antarctica and the Southern Ocean %44%  esp the hard science underlining the importance of Antarctica as a bellwether of global climate change.]
 ...
 ```
+
 ### Exit
 ```shell
 margostino@walpurgis> exit

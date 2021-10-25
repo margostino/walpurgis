@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/db"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"strconv"
 	"strings"
@@ -14,7 +13,7 @@ func ExecuteSnapshotUsers() {
 	var cursor int64
 
 	cursor = -1
-	file := db.TruncateFile()
+	file := context.TruncateFile()
 	defer file.Close()
 
 	for ok := true; ok; ok = cursor != 0 {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/db"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"sort"
 	"strconv"
@@ -14,7 +13,7 @@ import (
 )
 
 func ExecuteRankUsersBy(args []string) {
-	users := db.LoadUsersData()
+	users := context.GetUsersData()
 
 	if len(args) == 0 {
 		// TODO: pre-defined fallback/default
@@ -26,12 +25,12 @@ func ExecuteRankUsersBy(args []string) {
 	}
 }
 
-func rankByAttribute(users []*db.User, attribute string, order string) {
+func rankByAttribute(users []*context.User, attribute string, order string) {
 	rankBy(users, attribute, order)
 	print(users)
 }
 
-func rankBy(users []*db.User, attribute string, order string) {
+func rankBy(users []*context.User, attribute string, order string) {
 	sort.SliceStable(users, func(i, j int) bool {
 		switch strings.ToLower(attribute) {
 		case "status":
@@ -64,7 +63,7 @@ func rankByNumber(first int, second int, order string) bool {
 	return first > second
 }
 
-func rankByLastStatus(users []*db.User) {
+func rankByLastStatus(users []*context.User) {
 	sort.SliceStable(users, func(i, j int) bool {
 		return (users)[i].LastStatusCreatedAt.Before((users)[j].LastStatusCreatedAt)
 	})
@@ -87,14 +86,14 @@ func rankByLastStatus(users []*db.User) {
 //	close(ch)
 //}
 
-func getLastGetLastActivityOf(users *[]db.User, ch chan<- db.UserInfo, wg *sync.WaitGroup) {
+func getLastGetLastActivityOf(users *[]context.User, ch chan<- context.UserInfo, wg *sync.WaitGroup) {
 	for _, user := range *users {
 		go getLastActivityBy(user, ch)
 		wg.Done()
 	}
 }
 
-func getLastActivityBy(user db.User, ch chan<- db.UserInfo) {
+func getLastActivityBy(user context.User, ch chan<- context.UserInfo) {
 	var lastActivity time.Time
 	id, _ := strconv.ParseInt(user.ID, 10, 64)
 	tweets, _, err := context.TwitterTimelines().UserTimeline(&twitter.UserTimelineParams{
@@ -105,28 +104,28 @@ func getLastActivityBy(user db.User, ch chan<- db.UserInfo) {
 	if len(tweets) > 0 {
 		lastActivity, _ = tweets[0].CreatedAtTime()
 	}
-	userInfo := db.UserInfo{Username: user.Username, LastActivity: lastActivity}
+	userInfo := context.UserInfo{Username: user.Username, LastActivity: lastActivity}
 	ch <- userInfo
 }
 
-func getUserProfile(users []db.User, ch <-chan db.UserInfo, wg *sync.WaitGroup) []db.UserInfo {
-	var profiles = make([]db.UserInfo, 0)
+func getUserProfile(users []context.User, ch <-chan context.UserInfo, wg *sync.WaitGroup) []context.UserInfo {
+	var profiles = make([]context.UserInfo, 0)
 	for i := 0; i < len(users); i++ {
 		user := <-ch
-		profiles = append(profiles, db.UserInfo{Username: user.Username, LastActivity: user.LastActivity})
+		profiles = append(profiles, context.UserInfo{Username: user.Username, LastActivity: user.LastActivity})
 		wg.Done()
 	}
 	return profiles
 }
 
-func sortByLastActivity(profiles *[]db.UserInfo) {
+func sortByLastActivity(profiles *[]context.UserInfo) {
 	sort.SliceStable(*profiles, func(i, j int) bool {
 		return (*profiles)[i].LastActivity.Before((*profiles)[j].LastActivity)
 	})
 }
 
 // TODO: generalize all prints and the requested information
-func print(users []*db.User) {
+func print(users []*context.User) {
 	for _, user := range users {
 		fmt.Printf("User: %s - Created At: %s - Last Activity: %s]\n", user.Username, user.CreatedAt, user.LastStatusCreatedAt)
 	}

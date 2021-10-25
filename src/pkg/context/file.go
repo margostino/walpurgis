@@ -1,8 +1,7 @@
-package db
+package context
 
 import (
 	"bufio"
-	"github.com/margostino/walpurgis/pkg/context"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"log"
 	"os"
@@ -41,20 +40,20 @@ type User struct {
 }
 
 func TruncateFile() *os.File {
-	file, err := os.OpenFile(context.GetUserStorePath(), os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(GetUserStorePath(), os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
 	helper.Check(err)
 	return file
 }
 
-func OpenFile() *os.File {
-	file, err := os.OpenFile(context.GetUserStorePath(), os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+func OpenFile(filepath string) *os.File {
+	file, err := os.OpenFile(filepath, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 	helper.Check(err)
 	return file
 }
 
-func LoadUsersData() []*User {
+func LoadUsersData(filepath string) []*User {
 	var allUsers = make([]*User, 0)
-	file := OpenFile()
+	file := OpenFile(filepath)
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 	// optionally, resize scanner's capacity for lines over 64K

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/db"
 	"github.com/margostino/walpurgis/pkg/helper"
 	"strings"
 )
@@ -12,8 +11,7 @@ import (
 // TODO: more stats, ML/clustering for descriptions, generalize the code, separate collections and results. Smart (cross) calculations
 
 func ExecuteShowStats() {
-	// TODO: load data users in memory once shell is started, rather than in different commands
-	users := db.LoadUsersData()
+	users := context.GetUsersData()
 	rootUser := getUser()
 	if rootUser != nil {
 		fmt.Println()

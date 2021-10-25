@@ -11,22 +11,32 @@ import (
 
 var appContext *AppContext
 
+type Data struct {
+	Users []*User
+}
+
 type AppContext struct {
 	Configuration *Configuration
 	AppPath       string
 	TwitterClient *twitter.Client
+	Data          *Data
 }
 
 func Initialize() {
 	appPath := getAppPath()
 	configuration := GetConfiguration(appPath + "/config/")
 	twitterConfig := oauth1.NewConfig(configuration.Twitter.ApiKey, configuration.Twitter.ApiSecret)
+	usersDataPath := appPath + "/" + configuration.Store.Users
+	users := LoadUsersData(usersDataPath)
 	token := oauth1.NewToken(configuration.Twitter.AccessKey, configuration.Twitter.AccessSecret)
 	httpClient := twitterConfig.Client(oauth1.NoContext, token)
 	appContext = &AppContext{
 		Configuration: configuration,
 		AppPath:       appPath,
 		TwitterClient: twitter.NewClient(httpClient),
+		Data: &Data{
+			Users: users,
+		},
 	}
 }
 
@@ -49,6 +59,10 @@ func GetTwitterUsername() string {
 
 func GetUserStorePath() string {
 	return appContext.AppPath + "/" + appContext.Configuration.Store.Users
+}
+
+func GetUsersData() []*User {
+	return appContext.Data.Users
 }
 
 func GetConfigPath() string {
