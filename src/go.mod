@@ -3,7 +3,6 @@ module github.com/margostino/walpurgis
 go 1.16
 
 require (
-	github.com/c-bata/go-prompt v0.2.6
 	github.com/dghubble/go-twitter v0.0.0-20210609183100-2fdbf421508e
 	github.com/dghubble/oauth1 v0.7.0
 	github.com/margostino/griffin v0.0.5-beta.0.20211019173826-2d9e1411828f
