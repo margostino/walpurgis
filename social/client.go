@@ -1,17 +1,18 @@
-package context
+package social
 
 import (
 	"github.com/dghubble/go-twitter/twitter"
+	"github.com/margostino/walpurgis/config"
 )
 
 func TwitterTimelines() *twitter.TimelineService {
-	return appContext.TwitterClient.Timelines
+	return config.Context.TwitterClient.Timelines
 }
 
 func TwitterUsers() *twitter.UserService {
-	return appContext.TwitterClient.Users
+	return config.Context.TwitterClient.Users
 }
 
 func TwitterFriends() *twitter.FriendService {
-	return appContext.TwitterClient.Friends
+	return config.Context.TwitterClient.Friends
 }

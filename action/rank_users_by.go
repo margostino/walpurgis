@@ -3,8 +3,9 @@ package action
 import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/helper"
+	"github.com/margostino/walpurgis/common"
+	"github.com/margostino/walpurgis/config"
+	"github.com/margostino/walpurgis/social"
 	"sort"
 	"strconv"
 	"strings"
@@ -13,7 +14,7 @@ import (
 )
 
 func ExecuteRankUsersBy(args []string) {
-	users := context.GetUsersData()
+	users := config.GetUsersData()
 
 	if len(args) == 0 {
 		// TODO: pre-defined fallback/default
@@ -25,12 +26,12 @@ func ExecuteRankUsersBy(args []string) {
 	}
 }
 
-func rankByAttribute(users []*context.User, attribute string, order string) {
+func rankByAttribute(users []*config.User, attribute string, order string) {
 	rankBy(users, attribute, order)
 	print(users)
 }
 
-func rankBy(users []*context.User, attribute string, order string) {
+func rankBy(users []*config.User, attribute string, order string) {
 	sort.SliceStable(users, func(i, j int) bool {
 		switch strings.ToLower(attribute) {
 		case "status":
@@ -63,7 +64,7 @@ func rankByNumber(first int, second int, order string) bool {
 	return first > second
 }
 
-func rankByLastStatus(users []*context.User) {
+func rankByLastStatus(users []*config.User) {
 	sort.SliceStable(users, func(i, j int) bool {
 		return (users)[i].LastStatusCreatedAt.Before((users)[j].LastStatusCreatedAt)
 	})
@@ -86,46 +87,46 @@ func rankByLastStatus(users []*context.User) {
 //	close(ch)
 //}
 
-func getLastGetLastActivityOf(users *[]context.User, ch chan<- context.UserInfo, wg *sync.WaitGroup) {
+func getLastGetLastActivityOf(users *[]config.User, ch chan<- config.UserInfo, wg *sync.WaitGroup) {
 	for _, user := range *users {
 		go getLastActivityBy(user, ch)
 		wg.Done()
 	}
 }
 
-func getLastActivityBy(user context.User, ch chan<- context.UserInfo) {
+func getLastActivityBy(user config.User, ch chan<- config.UserInfo) {
 	var lastActivity time.Time
 	id, _ := strconv.ParseInt(user.ID, 10, 64)
-	tweets, _, err := context.TwitterTimelines().UserTimeline(&twitter.UserTimelineParams{
+	tweets, _, err := social.TwitterTimelines().UserTimeline(&twitter.UserTimelineParams{
 		UserID: id,
 		Count:  1,
 	})
-	helper.Check(err)
+	common.Check(err)
 	if len(tweets) > 0 {
 		lastActivity, _ = tweets[0].CreatedAtTime()
 	}
-	userInfo := context.UserInfo{Username: user.Username, LastActivity: lastActivity}
+	userInfo := config.UserInfo{Username: user.Username, LastActivity: lastActivity}
 	ch <- userInfo
 }
 
-func getUserProfile(users []context.User, ch <-chan context.UserInfo, wg *sync.WaitGroup) []context.UserInfo {
-	var profiles = make([]context.UserInfo, 0)
+func getUserProfile(users []config.User, ch <-chan config.UserInfo, wg *sync.WaitGroup) []config.UserInfo {
+	var profiles = make([]config.UserInfo, 0)
 	for i := 0; i < len(users); i++ {
 		user := <-ch
-		profiles = append(profiles, context.UserInfo{Username: user.Username, LastActivity: user.LastActivity})
+		profiles = append(profiles, config.UserInfo{Username: user.Username, LastActivity: user.LastActivity})
 		wg.Done()
 	}
 	return profiles
 }
 
-func sortByLastActivity(profiles *[]context.UserInfo) {
+func sortByLastActivity(profiles *[]config.UserInfo) {
 	sort.SliceStable(*profiles, func(i, j int) bool {
 		return (*profiles)[i].LastActivity.Before((*profiles)[j].LastActivity)
 	})
 }
 
 // TODO: generalize all prints and the requested information
-func print(users []*context.User) {
+func print(users []*config.User) {
 	for _, user := range users {
 		fmt.Printf("User: %s - Created At: %s - Last Activity: %s]\n", user.Username, user.CreatedAt, user.LastStatusCreatedAt)
 	}

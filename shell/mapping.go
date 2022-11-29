@@ -2,7 +2,7 @@ package shell
 
 import (
 	"github.com/margostino/griffin/pkg/griffin"
-	"github.com/margostino/walpurgis/pkg/action"
+	"github.com/margostino/walpurgis/action"
 )
 
 var SimpleActionsMapping = map[string]func(){

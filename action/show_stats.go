@@ -3,15 +3,16 @@ package action
 import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/helper"
+	"github.com/margostino/walpurgis/common"
+	"github.com/margostino/walpurgis/config"
+	"github.com/margostino/walpurgis/social"
 	"strings"
 )
 
 // TODO: more stats, ML/clustering for descriptions, generalize the code, separate collections and results. Smart (cross) calculations
 
 func ExecuteShowStats() {
-	users := context.GetUsersData()
+	users := config.GetUsersData()
 	rootUser := getUser()
 	if rootUser != nil {
 		fmt.Println()
@@ -85,9 +86,9 @@ func countIf(condition bool) int {
 }
 
 func getUser() *twitter.User {
-	user, _, err := context.TwitterUsers().Show(&twitter.UserShowParams{
-		ScreenName: context.GetTwitterUsername(),
+	user, _, err := social.TwitterUsers().Show(&twitter.UserShowParams{
+		ScreenName: config.GetTwitterUsername(),
 	})
-	helper.Check(err)
+	common.Check(err)
 	return user
 }

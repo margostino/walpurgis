@@ -1,8 +1,8 @@
-package context
+package config
 
 import (
 	"bufio"
-	"github.com/margostino/walpurgis/pkg/helper"
+	"github.com/margostino/walpurgis/common"
 	"log"
 	"os"
 	"strconv"
@@ -41,13 +41,13 @@ type User struct {
 
 func TruncateFile() *os.File {
 	file, err := os.OpenFile(GetUserStorePath(), os.O_TRUNC|os.O_RDWR|os.O_CREATE, 0644)
-	helper.Check(err)
+	common.Check(err)
 	return file
 }
 
 func OpenFile(filepath string) *os.File {
 	file, err := os.OpenFile(filepath, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
-	helper.Check(err)
+	common.Check(err)
 	return file
 }
 

@@ -12,7 +12,7 @@ old and non-suitable accounts according your parameters.
 > export ACCESS_KEY={TWITTER_ACCESS_KEY}
 > export ACCESS_SECRET={TWITTER_ACCESS_SECRET}
 ```
-Walpurgis uses a static configuration file. See example [here](./config/configuration.yml)
+Walpurgis uses a static configuration file. See example [here](config.yml)
 ## Run
 
 ```shell

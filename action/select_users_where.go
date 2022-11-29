@@ -2,12 +2,12 @@ package action
 
 import (
 	"fmt"
-	"github.com/margostino/walpurgis/pkg/context"
+	"github.com/margostino/walpurgis/config"
 	"strings"
 )
 
 func ExecuteSelectUsersWhere(args []string) {
-	users := context.GetUsersData()
+	users := config.GetUsersData()
 
 	for _, user := range users {
 		match := false
@@ -27,7 +27,7 @@ func ExecuteSelectUsersWhere(args []string) {
 	}
 }
 
-func getKey(param string, user *context.User) string {
+func getKey(param string, user *config.User) string {
 	switch strings.ToLower(param) {
 	case "description":
 		return user.Description

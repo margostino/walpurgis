@@ -3,8 +3,9 @@ package action
 import (
 	"fmt"
 	"github.com/dghubble/go-twitter/twitter"
-	"github.com/margostino/walpurgis/pkg/context"
-	"github.com/margostino/walpurgis/pkg/helper"
+	"github.com/margostino/walpurgis/common"
+	"github.com/margostino/walpurgis/config"
+	"github.com/margostino/walpurgis/social"
 	"strconv"
 	"strings"
 )
@@ -13,11 +14,11 @@ func ExecuteSnapshotUsers() {
 	var cursor int64
 
 	cursor = -1
-	file := context.TruncateFile()
+	file := config.TruncateFile()
 	defer file.Close()
 
 	for ok := true; ok; ok = cursor != 0 {
-		friends, resp, _ := context.TwitterFriends().List(&twitter.FriendListParams{
+		friends, resp, _ := social.TwitterFriends().List(&twitter.FriendListParams{
 			Cursor: cursor,
 			Count:  200,
 		})
@@ -51,7 +52,7 @@ func ExecuteSnapshotUsers() {
 					description,
 					friends.NextCursorStr)
 				_, err := file.WriteString(text)
-				helper.Check(err)
+				common.Check(err)
 			}
 			cursor = friends.NextCursor
 		} else {

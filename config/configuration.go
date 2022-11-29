@@ -1,4 +1,4 @@
-package context
+package config
 
 import (
 	"github.com/margostino/griffin/pkg/griffin"
@@ -27,18 +27,19 @@ type Quote struct {
 
 type Configuration struct {
 	Store    Store                          `yaml:"store"`
-	Twitter  Twitter                        `yaml:"twitter"`
+	Twitter  Twitter                        `yaml:"social"`
 	Commands []griffin.CommandConfiguration `yaml:"commands"`
 	Quotes   []Quote                        `yaml:"quotes"`
 }
 
 func GetConfiguration(appPath string) *Configuration {
 	var configuration Configuration
-	yamlFile, err := ioutil.ReadFile(appPath + "configuration.yml")
+	yamlFile, err := ioutil.ReadFile(appPath + "/config.yml")
 
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 	}
+	
 	yamlFile = []byte(os.ExpandEnv(string(yamlFile)))
 	err = yaml.Unmarshal(yamlFile, &configuration)
 	if err != nil {
@@ -48,9 +49,9 @@ func GetConfiguration(appPath string) *Configuration {
 }
 
 func GetUsername() string {
-	return appContext.Configuration.Twitter.Username
+	return Context.Configuration.Twitter.Username
 }
 
 func GetQuotes() []Quote {
-	return appContext.Configuration.Quotes
+	return Context.Configuration.Quotes
 }

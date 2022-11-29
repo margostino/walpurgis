@@ -1,4 +1,4 @@
-package context
+package config
 
 import (
 	"github.com/margostino/griffin/pkg/griffin"
@@ -6,6 +6,6 @@ import (
 
 func CommandsConfiguration() *griffin.CommandsConfiguration {
 	return &griffin.CommandsConfiguration{
-		CommandList: appContext.Configuration.Commands,
+		CommandList: Context.Configuration.Commands,
 	}
 }

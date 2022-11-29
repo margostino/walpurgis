@@ -1,4 +1,4 @@
-package context
+package config
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var appContext *AppContext
+var Context *AppContext
 
 type Data struct {
 	Users []*User
@@ -24,13 +24,13 @@ type AppContext struct {
 
 func Initialize() {
 	appPath := getAppPath()
-	configuration := GetConfiguration(appPath + "/config/")
+	configuration := GetConfiguration(appPath)
 	twitterConfig := oauth1.NewConfig(configuration.Twitter.ApiKey, configuration.Twitter.ApiSecret)
 	usersDataPath := appPath + "/" + configuration.Store.Users
 	users := LoadUsersData(usersDataPath)
 	token := oauth1.NewToken(configuration.Twitter.AccessKey, configuration.Twitter.AccessSecret)
 	httpClient := twitterConfig.Client(oauth1.NoContext, token)
-	appContext = &AppContext{
+	Context = &AppContext{
 		Configuration: configuration,
 		AppPath:       appPath,
 		TwitterClient: twitter.NewClient(httpClient),
@@ -47,26 +47,26 @@ func Welcome() {
 	fmt.Printf("Welcome to Walpurgis %s!\n", GetTwitterUsername())
 	fmt.Printf("\"%s\" - %s\n", quote.Quote, quote.Author)
 	fmt.Printf("\n")
-	fmt.Printf("Application path: %s\n", appContext.AppPath)
+	fmt.Printf("Application path: %s\n", Context.AppPath)
 	fmt.Printf("Configuration path: %s\n", GetConfigPath())
 	fmt.Printf("Users store path: %s\n", GetUserStorePath())
 	fmt.Printf("\n")
 }
 
 func GetTwitterUsername() string {
-	return appContext.Configuration.Twitter.Username
+	return Context.Configuration.Twitter.Username
 }
 
 func GetUserStorePath() string {
-	return appContext.AppPath + "/" + appContext.Configuration.Store.Users
+	return Context.AppPath + "/" + Context.Configuration.Store.Users
 }
 
 func GetUsersData() []*User {
-	return appContext.Data.Users
+	return Context.Data.Users
 }
 
 func GetConfigPath() string {
-	return appContext.AppPath + "/config"
+	return Context.AppPath + "/config"
 }
 
 func getAppPath() string {
